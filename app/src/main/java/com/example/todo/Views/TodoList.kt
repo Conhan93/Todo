@@ -12,15 +12,31 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.todo.Models.Todo
+import androidx.hilt.navigation.compose.hiltViewModel
+
+
+import com.example.todo.Util.UIEvent
+import com.example.todo.Viewmodels.TodoListUIEvent
 import com.example.todo.Viewmodels.TodoListVM
-import com.example.todo.state.State
+
 
 
 @Composable
-fun TodoList(state : MutableState<State>) {
+fun TodoList(
+    vm : TodoListVM = hiltViewModel(),
+    onNavigate : (UIEvent.navigate) -> Unit,
+) {
 
-    val tm by remember { mutableStateOf( TodoListVM() ) }
+    val todos = vm.todos.collectAsState(initial = listOf())
+
+    LaunchedEffect(key1 = true) {
+        vm.uiEvents.collect {
+            when(it) {
+                is UIEvent.navigate -> onNavigate(it)
+                else -> Unit
+            }
+        }
+    }
     
     Scaffold(
         topBar = {
@@ -31,7 +47,7 @@ fun TodoList(state : MutableState<State>) {
                         fontWeight = FontWeight.Bold
                     )
                 )
-                Button(onClick = { state.value = State.Item(Todo("New", ""))}) {
+                Button(onClick = { vm.onUIEvent(TodoListUIEvent.addItem) }) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Create new todo")
                 }
             }
@@ -42,18 +58,16 @@ fun TodoList(state : MutableState<State>) {
                     .fillMaxSize(),
 
             ) {
-                tm
-                    .getTodos()
-                    .forEach {
-                        Row(Modifier.padding(start = 10.dp)){
-                            Text(
-                                text = it.title,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { state.value = State.Item(it) }
-                            )
-                        }
+                todos.value.forEach {
+                    Row(Modifier.padding(start = 10.dp)) {
+                        Text(
+                            text = it.title,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { vm.onUIEvent(TodoListUIEvent.itemSelect(it.id!!)) }
+                        )
                     }
+                }
             }
         }
     )
@@ -68,6 +82,5 @@ fun TodoList(state : MutableState<State>) {
 @Preview
 @Composable
 fun TodoListPreview() {
-    val dummyState = mutableStateOf<State>(State.ShowList)
-    TodoList(dummyState)
+    TodoList() {}
 }

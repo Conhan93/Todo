@@ -1,14 +1,38 @@
 package com.example.todo.Viewmodels
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.todo.Data.TodoRepository
 import com.example.todo.Models.Todo
+import com.example.todo.Util.Routes
+import com.example.todo.Util.UIEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TodoListVM : ViewModel() {
+@HiltViewModel
+class TodoListVM @Inject constructor(
+    private val repository : TodoRepository
+) : ViewModel() {
 
-    private val todos = mutableStateListOf(Todo(title = "Android", "babababa"))
+    val todos = repository.getTodos()
 
-    fun getTodos() : List<Todo> {
-        return todos
+    private val _uiEvents = Channel<UIEvent>()
+    val uiEvents = _uiEvents.receiveAsFlow()
+
+    fun onUIEvent(event : TodoListUIEvent) {
+        when(event) {
+            is TodoListUIEvent.itemDelete -> TODO()
+            is TodoListUIEvent.itemSelect -> sendUIEvent(UIEvent.navigate(Routes.TODO_ITEM + "?todoId=${event.id}"))
+            TodoListUIEvent.addItem -> sendUIEvent(UIEvent.navigate(Routes.TODO_ITEM))
+        }
+    }
+
+    private fun sendUIEvent(event : UIEvent) {
+        viewModelScope.launch {
+            _uiEvents.send(event)
+        }
     }
 }
