@@ -1,27 +1,40 @@
 package com.example.todo.Views
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.todo.Models.Todo
+import androidx.hilt.navigation.compose.hiltViewModel
+
+import com.example.todo.Util.UIEvent
+import com.example.todo.Viewmodels.TodoItemEvent
 import com.example.todo.Viewmodels.TodoItemVM
-import com.example.todo.state.State
+
 
 
 @Composable
 fun TodoItem(
-    state : MutableState<State>,
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    viewModel : TodoItemVM = hiltViewModel(),
+    onPopBack : (UIEvent.popStackBack) -> Unit
 ) {
-    val vm by remember { mutableStateOf(TodoItemVM((state.value as State.Item).item))  }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvents.collect {
+            when(it) {
+                is UIEvent.popStackBack -> onPopBack(it)
+                else -> Unit
+            }
+        }
+    }
 
     Surface(
         color = MaterialTheme.colors.background,
@@ -34,7 +47,13 @@ fun TodoItem(
                     backgroundColor = MaterialTheme.colors.primary,
                     elevation = 3.dp
                 ) {
-                    Text(vm.getTitle())
+                    TextField(
+                        value = viewModel._title,
+                        onValueChange = { viewModel.onEvent(TodoItemEvent.setTitle(it)) }
+                    )
+                    Button(onClick = { viewModel.onEvent(TodoItemEvent.saveTodo) }) {
+                        Icon(imageVector = Icons.Filled.Add, contentDescription = "save todo")
+                    }
                 }
             },
             content = {
@@ -44,8 +63,8 @@ fun TodoItem(
                     TextField(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        value = vm.getBody(),
-                        onValueChange = { vm.setBody(it) }
+                        value = viewModel._body,
+                        onValueChange = { viewModel.onEvent(TodoItemEvent.setBody(it)) }
                     )
                 }
             }
@@ -59,7 +78,5 @@ fun TodoItem(
 @Preview
 @Composable
 fun TodoItemPreview() {
-    val dummyTodo = Todo(title = "Foo", "Fooby foobdy dooby doo")
-    val dummyState = mutableStateOf<State>(State.Item(dummyTodo))
-    TodoItem(dummyState)
+    TodoItem { }
 }
