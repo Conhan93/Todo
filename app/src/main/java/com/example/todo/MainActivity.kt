@@ -3,7 +3,6 @@ package com.example.todo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 
 import androidx.navigation.compose.NavHost
@@ -12,8 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 
 import com.example.todo.Util.Routes
-import com.example.todo.Views.TodoItem
-import com.example.todo.Views.TodoList
+import com.example.todo.Views.TodoItemScreen
+import com.example.todo.Views.TodoListScreen
 import com.example.todo.ui.theme.TodoTheme
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
             TodoTheme {
                 NavHost(navController = navController , startDestination = Routes.TODO_LIST ) {
-                    composable(Routes.TODO_LIST) { TodoList { navController.navigate(it.route) } }
+                    composable(Routes.TODO_LIST) { TodoListScreen { navController.navigate(it.route) } }
                     composable(
                         route = Routes.TODO_ITEM + "?todoId={todo_id}",
                         arguments = listOf(
@@ -38,7 +37,7 @@ class MainActivity : ComponentActivity() {
                                 defaultValue = -1
                             }
                         )
-                    ) { TodoItem { navController.popBackStack() } }
+                    ) { TodoItemScreen { navController.popBackStack() } }
                 }
             }
         }

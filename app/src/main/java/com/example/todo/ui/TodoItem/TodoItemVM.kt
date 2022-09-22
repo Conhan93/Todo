@@ -1,4 +1,4 @@
-package com.example.todo.Viewmodels
+package com.example.todo.ui.TodoItem
 
 import android.util.Log
 import androidx.compose.runtime.getValue

@@ -16,13 +16,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 
 import com.example.todo.Util.UIEvent
-import com.example.todo.Viewmodels.TodoListUIEvent
-import com.example.todo.Viewmodels.TodoListVM
+import com.example.todo.ui.TodoList.TodoListUIEvent
+import com.example.todo.ui.TodoList.TodoListVM
 
 
 
 @Composable
-fun TodoList(
+fun TodoListScreen(
     vm : TodoListVM = hiltViewModel(),
     onNavigate : (UIEvent.navigate) -> Unit,
 ) {
@@ -51,28 +51,25 @@ fun TodoList(
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Create new todo")
                 }
             }
-        },
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
 
             ) {
-                todos.value.forEach {
-                    Row(Modifier.padding(start = 10.dp)) {
-                        Text(
-                            text = it.title,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { vm.onUIEvent(TodoListUIEvent.itemSelect(it.id!!)) }
-                        )
-                    }
+            todos.value.forEach {
+                Row(Modifier.padding(start = 10.dp)) {
+                    Text(
+                        text = it.title,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { vm.onUIEvent(TodoListUIEvent.itemSelect(it.id!!)) }
+                    )
                 }
             }
         }
-    )
-
-
+    }
 }
 
 
@@ -82,5 +79,5 @@ fun TodoList(
 @Preview
 @Composable
 fun TodoListPreview() {
-    TodoList() {}
+    TodoListScreen() {}
 }

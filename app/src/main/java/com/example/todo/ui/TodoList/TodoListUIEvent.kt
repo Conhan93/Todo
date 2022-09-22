@@ -1,6 +1,4 @@
-package com.example.todo.Viewmodels
-
-import com.example.todo.Models.Todo
+package com.example.todo.ui.TodoList
 
 sealed class TodoListUIEvent {
     data class itemSelect(val id : Int) : TodoListUIEvent()

@@ -1,11 +1,11 @@
-package com.example.todo.Viewmodels
+package com.example.todo.ui.TodoList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.Data.TodoRepository
-import com.example.todo.Models.Todo
 import com.example.todo.Util.Routes
 import com.example.todo.Util.UIEvent
+import com.example.todo.ui.TodoList.TodoListUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

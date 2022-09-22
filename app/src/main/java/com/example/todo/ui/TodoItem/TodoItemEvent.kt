@@ -1,4 +1,4 @@
-package com.example.todo.Viewmodels
+package com.example.todo.ui.TodoItem
 
 sealed class TodoItemEvent {
     data class setBody(val body : String) : TodoItemEvent()
