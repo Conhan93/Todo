@@ -24,7 +24,7 @@ class TodoListVM @Inject constructor(
 
     fun onUIEvent(event : TodoListUIEvent) {
         when(event) {
-            is TodoListUIEvent.itemDelete -> TODO()
+            is TodoListUIEvent.itemDelete -> deleteTodo(event.id)
             is TodoListUIEvent.itemSelect -> sendUIEvent(UIEvent.navigate(Routes.TODO_ITEM + "?todoId=${event.id}"))
             TodoListUIEvent.addItem -> sendUIEvent(UIEvent.navigate(Routes.TODO_ITEM))
         }
@@ -33,6 +33,14 @@ class TodoListVM @Inject constructor(
     private fun sendUIEvent(event : UIEvent) {
         viewModelScope.launch {
             _uiEvents.send(event)
+        }
+    }
+
+    private fun deleteTodo(id : Int) {
+        viewModelScope.launch {
+            repository.getTodoByIDAsync(id)?.let {
+                repository.deleteTodoAsync(it)
+            }
         }
     }
 }

@@ -1,8 +1,11 @@
 package com.example.todo.Views
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -18,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 
 import com.example.todo.Util.UIEvent
+import com.example.todo.ui.TodoList.SwipeableListItem
 import com.example.todo.ui.TodoList.TodoListItem
 import com.example.todo.ui.TodoList.TodoListUIEvent
 import com.example.todo.ui.TodoList.TodoListVM
@@ -56,17 +60,23 @@ fun TodoListScreen(
             }
         }
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-            todos.value.forEach {
-                TodoListItem(
-                    todoItem = it,
-                    onEvent = vm::onUIEvent,
-                    modifier = Modifier.padding(10.dp)
-                )
+            items(todos.value, key = { it.id!! }) {
+                SwipeableListItem({vm.onUIEvent(TodoListUIEvent.itemDelete(it.id!!))}) {
+                    TodoListItem(
+                        todoItem = it,
+                        onEvent = vm::onUIEvent,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colors.background)
+                    )
+                }
+
             }
         }
     }
