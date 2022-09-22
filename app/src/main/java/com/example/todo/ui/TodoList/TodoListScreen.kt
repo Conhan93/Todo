@@ -1,7 +1,7 @@
 package com.example.todo.Views
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.clickable
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,12 +10,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
+
 import com.example.todo.Util.UIEvent
+import com.example.todo.ui.TodoList.TodoListItem
 import com.example.todo.ui.TodoList.TodoListUIEvent
 import com.example.todo.ui.TodoList.TodoListVM
 
@@ -56,17 +59,14 @@ fun TodoListScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize(),
-
+            verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
             todos.value.forEach {
-                Row(Modifier.padding(start = 10.dp)) {
-                    Text(
-                        text = it.title,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { vm.onUIEvent(TodoListUIEvent.itemSelect(it.id!!)) }
-                    )
-                }
+                TodoListItem(
+                    todoItem = it,
+                    onEvent = vm::onUIEvent,
+                    modifier = Modifier.padding(10.dp)
+                )
             }
         }
     }
