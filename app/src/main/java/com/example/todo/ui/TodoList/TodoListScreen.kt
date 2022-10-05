@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 
 import com.example.todo.Util.UIEvent
+import com.example.todo.ui.TodoList.Components.NewTodoButton
 import com.example.todo.ui.TodoList.SwipeableListItem
 import com.example.todo.ui.TodoList.TodoListItem
 import com.example.todo.ui.TodoList.TodoListUIEvent
@@ -54,11 +55,9 @@ fun TodoListScreen(
                         fontWeight = FontWeight.Bold
                     )
                 )
-                Button(onClick = { vm.onUIEvent(TodoListUIEvent.addItem) }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Create new todo")
-                }
             }
-        }
+        },
+        floatingActionButton = { NewTodoButton(onEvent = vm::onUIEvent) }
     ) {
         LazyColumn(
             modifier = Modifier
