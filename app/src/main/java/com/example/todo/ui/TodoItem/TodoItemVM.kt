@@ -22,11 +22,15 @@ class TodoItemVM @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    enum class TodoState { VIEW, EDIT }
+
     var todo by mutableStateOf<Todo?>(null)
         private set
-    var _title by mutableStateOf("")
+    var title by mutableStateOf("")
         private set
-    var _body by mutableStateOf("")
+    var body by mutableStateOf("")
+        private set
+    var state by mutableStateOf(TodoState.VIEW)
         private set
 
     private val _uiEvents = Channel<UIEvent>()
@@ -39,8 +43,8 @@ class TodoItemVM @Inject constructor(
         if(id != null && id != -1)
             viewModelScope.launch {
                 repository.getTodoByIDAsync(id)?.let {
-                    _title = it.title
-                    _body = it.body
+                    title = it.title
+                    body = it.body
                     todo = it
                 }
             }
@@ -51,15 +55,16 @@ class TodoItemVM @Inject constructor(
     fun onEvent(event: TodoItemEvent) {
         when(event) {
             TodoItemEvent.saveTodo -> saveTodo()
-            is TodoItemEvent.setBody -> _body = event.body
-            is TodoItemEvent.setTitle -> _title = event.title
+            is TodoItemEvent.setBody -> body = event.body
+            is TodoItemEvent.setTitle -> title = event.title
+            is TodoItemEvent.setEditState -> state = event.state
         }
     }
 
     private fun saveTodo() {
         todo?.let {
-            it.title = _title
-            it.body = _body
+            it.title = title
+            it.body = body
 
             viewModelScope.launch {
                 repository.insertTodoAsync(it)
