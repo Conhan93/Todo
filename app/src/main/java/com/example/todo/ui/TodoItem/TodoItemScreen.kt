@@ -44,9 +44,10 @@ fun TodoItemScreen(
         ) {
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxSize(),
                 value = viewModel.body,
-                onValueChange = { viewModel.onEvent(TodoItemEvent.setBody(it)) }
+                onValueChange = { viewModel.onEvent(TodoItemEvent.setBody(it)) },
+                readOnly = viewModel.state == TodoItemVM.TodoState.VIEW
             )
         }
     }
