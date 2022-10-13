@@ -2,4 +2,9 @@
     <string name="app_name">Todo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="notification_title_key">title</string>
+    <string name="notification_message_key">message</string>
+    <string name="notification_id_key">uuid</string>
 </resources>
