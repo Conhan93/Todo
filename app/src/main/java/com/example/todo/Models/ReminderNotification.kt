@@ -9,5 +9,6 @@ data class ReminderNotification(
     val message: String,
     val uuid: String,
     val todoId: Int,
+    val date: String,
     @PrimaryKey val id: Int? = null
 )

@@ -19,6 +19,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.time.ZonedDateTime
 import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -67,7 +68,8 @@ class ReminderDaoTest {
             message = "boo",
             uuid = UUID.randomUUID().toString(),
             id = 1,
-            todoId = dummyTodoId
+            todoId = dummyTodoId,
+            date = ZonedDateTime.now().toString()
         )
 
         withContext(Dispatchers.IO) { dao.insertReminderAsync(reminder) }
@@ -87,7 +89,8 @@ class ReminderDaoTest {
             message = "boo",
             uuid = UUID.randomUUID().toString(),
             id = 1,
-            todoId = dummyTodoId
+            todoId = dummyTodoId,
+            date = ZonedDateTime.now().toString()
         )
 
         withContext(Dispatchers.IO) { dao.insertReminderAsync(reminder) }
@@ -114,7 +117,8 @@ class ReminderDaoTest {
             message = "boo",
             uuid = UUID.randomUUID().toString(),
             id = 1,
-            todoId = dummyTodoId
+            todoId = dummyTodoId,
+            date = ZonedDateTime.now().toString()
         )
 
         withContext(Dispatchers.IO) { dao.insertReminderAsync(reminder) }
@@ -136,7 +140,8 @@ class ReminderDaoTest {
             message = "boo",
             uuid = uuid.toString(),
             id = 1,
-            todoId = dummyTodoId
+            todoId = dummyTodoId,
+            date = ZonedDateTime.now().toString()
         )
 
         withContext(Dispatchers.IO) { dao.insertReminderAsync(reminder) }
@@ -158,7 +163,8 @@ class ReminderDaoTest {
             message = "boo",
             uuid = uuid,
             id = 1,
-            todoId = dummyTodoId
+            todoId = dummyTodoId,
+            date = ZonedDateTime.now().toString()
         )
 
         withContext(Dispatchers.IO) { dao.insertReminderAsync(reminder) }
@@ -179,21 +185,24 @@ class ReminderDaoTest {
                 message = "boo0",
                 uuid = UUID.randomUUID().toString(),
                 id = 1,
-                todoId = dummyTodoId
+                todoId = dummyTodoId,
+                date = ZonedDateTime.now().toString()
             ),
             ReminderNotification(
                 title = "foo1",
                 message = "boo1",
                 uuid = UUID.randomUUID().toString(),
                 id = 2,
-                todoId = dummyTodoId
+                todoId = dummyTodoId,
+                date = ZonedDateTime.now().toString()
             ),
             ReminderNotification(
                 title = "foo2",
                 message = "boo2",
                 uuid = UUID.randomUUID().toString(),
                 id = 3,
-                todoId = dummyTodoId
+                todoId = dummyTodoId,
+                date = ZonedDateTime.now().toString()
             )
         )
 
@@ -213,21 +222,24 @@ class ReminderDaoTest {
                 message = "boo0",
                 uuid = UUID.randomUUID().toString(),
                 id = 1,
-                todoId = dummyTodoId
+                todoId = dummyTodoId,
+                date = ZonedDateTime.now().toString()
             ),
             ReminderNotification(
                 title = "foo1",
                 message = "boo1",
                 uuid = UUID.randomUUID().toString(),
                 id = 2,
-                todoId = dummyTodoId
+                todoId = dummyTodoId,
+                date = ZonedDateTime.now().toString()
             ),
             ReminderNotification(
                 title = "foo2",
                 message = "boo2",
                 uuid = UUID.randomUUID().toString(),
                 id = 3,
-                todoId = dummyTodoId
+                todoId = dummyTodoId,
+                date = ZonedDateTime.now().toString()
             )
         )
 

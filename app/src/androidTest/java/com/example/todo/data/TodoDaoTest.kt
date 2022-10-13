@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.data
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -36,7 +36,7 @@ class TodoDaoTest {
             .allowMainThreadQueries()
             .build()
 
-        dao = database.dao
+        dao = database.todoDAO
     }
 
     @After
