@@ -14,7 +14,11 @@ class TodoItemRemindersVM: ViewModel() {
 
     fun onEvent(event: TodoItemRemindersEvent) {
         when(event) {
-            TodoItemRemindersEvent.backPressEvent -> TODO()
+            TodoItemRemindersEvent.backPressEvent -> {
+                viewModelScope.launch() {
+                    _uiEvents.send(UIEvent.popStackBack)
+                }
+            }
             TodoItemRemindersEvent.saveEvent -> TODO()
         }
     }
