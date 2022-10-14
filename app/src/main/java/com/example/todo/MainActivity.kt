@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import com.example.todo.Util.Routes
 import com.example.todo.Views.TodoItemScreen
 import com.example.todo.Views.TodoListScreen
+import com.example.todo.ui.TodoItemReminders.TodoItemRemindersScreen
 import com.example.todo.ui.theme.TodoTheme
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +39,15 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     ) { TodoItemScreen { navController.popBackStack() } }
+                    composable(
+                        route = Routes.TODO_REMINDER + "?todoId={todo_id}",
+                        arguments = listOf(
+                            navArgument("todo_id") {
+                                type = NavType.IntType
+                                defaultValue = -1
+                            }
+                        )
+                    ) { TodoItemRemindersScreen { navController.popBackStack() } }
                 }
             }
         }
