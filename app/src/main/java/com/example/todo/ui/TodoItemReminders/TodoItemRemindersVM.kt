@@ -94,6 +94,7 @@ class TodoItemRemindersVM @Inject constructor(
     private fun deleteReminder(reminderNotification: ReminderNotification) {
         viewModelScope.launch {
             repository.deleteReminderAsync(reminderNotification)
+            notificationService.removeNotification(reminderNotification)
         }
     }
 }
