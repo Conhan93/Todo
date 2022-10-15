@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.todo.Util.UIEvent
 import com.example.todo.ui.TodoItem.TodoItemVM
 import com.example.todo.ui.TodoItemReminders.Components.ReminderCard
+import com.example.todo.ui.TodoItemReminders.Components.RemindersList
 import com.example.todo.ui.TodoItemReminders.Components.TodoItemRemindersTopBar
 import com.example.todo.ui.TodoList.SwipeableListItem
 
@@ -44,23 +45,10 @@ fun TodoItemRemindersScreen(
     Scaffold(
         topBar = { TodoItemRemindersTopBar(onEvent = viewModel::onEvent)}
     ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            //modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
-            contentPadding = PaddingValues(4.dp)
-        ) {
-            items(reminders.value, key = {it.id!!}) {
-                SwipeableListItem(onDismiss = { viewModel.onEvent(TodoItemRemindersEvent.DeleteEvent(it)) }) {
-                    ReminderCard(
-                        reminderNotification = it,
-                        modifier = Modifier
-                            .background(
-                                MaterialTheme.colors.primary,
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                    )
-                }
-            }
+        if (viewModel.screenState == TodoItemRemindersVM.ScreenState.VIEW_LIST) {
+            RemindersList(reminders = reminders.value, onEvent = viewModel::onEvent)
+        } else {
+
         }
     }
 }
