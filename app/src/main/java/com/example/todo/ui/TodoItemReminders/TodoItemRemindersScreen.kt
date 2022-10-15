@@ -38,7 +38,10 @@ fun TodoItemRemindersScreen(
 
     Scaffold(
         topBar = { TodoItemRemindersTopBar(onEvent = viewModel::onEvent)},
-        floatingActionButton = { NewReminderButton(onEvent = viewModel::onEvent)}
+        floatingActionButton = {
+            if (viewModel.screenState == TodoItemRemindersVM.ScreenState.VIEW_LIST)
+                NewReminderButton(onEvent = viewModel::onEvent)
+        }
     ) {
         when(viewModel.screenState) {
             TodoItemRemindersVM.ScreenState.VIEW_LIST -> {
