@@ -10,7 +10,10 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.todo.ui.TodoItem.TodoItemEvent
 import com.example.todo.ui.TodoItem.TodoItemVM
 
@@ -23,6 +26,10 @@ fun TodoItemTopBar(
 ) {
 
     val padding = Modifier.padding(3.dp)
+    val titleStyle = TextStyle(
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp
+    )
 
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primary,
@@ -41,6 +48,7 @@ fun TodoItemTopBar(
                 TextField(
                     value = todoTitle,
                     onValueChange = { onEvent(TodoItemEvent.setTitle(it)) },
+                    textStyle = titleStyle,
                     modifier = padding.weight(3f)
                 )
                 IconButton(
@@ -53,6 +61,7 @@ fun TodoItemTopBar(
             } else {
                 Text(
                     text = todoTitle,
+                    style = titleStyle,
                     modifier = padding
                 )
                 Row {
