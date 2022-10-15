@@ -74,26 +74,13 @@ class TodoItemRemindersVM @Inject constructor(
 
     private fun addReminder(dateTime: ZonedDateTime) {
 
-        val reminder = ReminderNotification(
-            title = todo.title,
-            message = todo.body,
-            uuid = UUID.randomUUID().toString(),
-            todoId = todoId,
-            date = dateTime.toString()
-        )
-
         viewModelScope.launch {
-            repository.insertReminderAsync(reminder)
-            notificationService.scheduleNotification(
-                todo,
-                dateTime
-            )
+            notificationService.scheduleNotification(todo, dateTime)
         }
     }
 
     private fun deleteReminder(reminderNotification: ReminderNotification) {
         viewModelScope.launch {
-            repository.deleteReminderAsync(reminderNotification)
             notificationService.removeNotification(reminderNotification)
         }
     }
