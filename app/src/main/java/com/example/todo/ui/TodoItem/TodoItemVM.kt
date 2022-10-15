@@ -8,12 +8,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.Data.TodoRepository
+import com.example.todo.Models.Services.TodoNotificationService
 import com.example.todo.Models.Todo
+import com.example.todo.Util.Constants
+import com.example.todo.Util.Routes
 import com.example.todo.Util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,6 +62,9 @@ class TodoItemVM @Inject constructor(
             is TodoItemEvent.setBody -> body = event.body
             is TodoItemEvent.setTitle -> title = event.title
             is TodoItemEvent.setEditState -> state = event.state
+            TodoItemEvent.navigateToReminders -> {
+                sendUIEvent(UIEvent.navigate(Routes.TODO_REMINDER+ "?todoId=${todo!!.id!!}"))
+            }
         }
     }
 

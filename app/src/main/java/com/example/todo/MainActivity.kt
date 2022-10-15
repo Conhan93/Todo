@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 
 import com.example.todo.Util.Routes
+import com.example.todo.Util.UIEvent
 import com.example.todo.Views.TodoItemScreen
 import com.example.todo.Views.TodoListScreen
 import com.example.todo.ui.TodoItemReminders.TodoItemRemindersScreen
@@ -38,7 +39,14 @@ class MainActivity : ComponentActivity() {
                                 defaultValue = -1
                             }
                         )
-                    ) { TodoItemScreen { navController.popBackStack() } }
+                    ) {
+                        TodoItemScreen { event ->
+                            when (event) {
+                                is UIEvent.navigate -> navController.navigate(event.route)
+                                UIEvent.popStackBack -> navController.popBackStack()
+                            }
+                        }
+                    }
                     composable(
                         route = Routes.TODO_REMINDER + "?todoId={todo_id}",
                         arguments = listOf(

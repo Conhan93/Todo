@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
@@ -48,24 +49,25 @@ fun TodoItemTopBar(
                 ) {
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "save todo")
                 }
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = padding.then(buttonWeight)
-                ) {
-                    Icon(imageVector = Icons.Filled.List, "Todo Menu")
-                }
 
             } else {
                 Text(
                     text = todoTitle,
                     modifier = padding
                 )
-                Button(
-                    onClick = { onEvent(TodoItemEvent.setEditState(TodoItemVM.TodoState.EDIT))},
-                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.primaryVariant),
-                    modifier = padding
-                ) {
-                    Icon(imageVector = Icons.Filled.Edit, contentDescription = null)
+                Row {
+                    IconButton(
+                        onClick = { onEvent(TodoItemEvent.navigateToReminders) },
+                    ) {
+                        Icon(imageVector = Icons.Filled.DateRange, null)
+                    }
+                    Button(
+                        onClick = { onEvent(TodoItemEvent.setEditState(TodoItemVM.TodoState.EDIT))},
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colors.primaryVariant),
+                        modifier = padding
+                    ) {
+                        Icon(imageVector = Icons.Filled.Edit, contentDescription = null)
+                    }
                 }
             }
         }

@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 
 import com.example.todo.Util.UIEvent
+import com.example.todo.ui.Components.DateTimePicker
 import com.example.todo.ui.TodoItem.Components.TodoItemTopBar
 import com.example.todo.ui.TodoItem.TodoItemEvent
 import com.example.todo.ui.TodoItem.TodoItemVM
@@ -20,25 +21,24 @@ import com.example.todo.ui.TodoItem.TodoItemVM
 fun TodoItemScreen(
     modifier : Modifier = Modifier,
     viewModel : TodoItemVM = hiltViewModel(),
-    onPopBack : (UIEvent.popStackBack) -> Unit
+    onUIEvent: (UIEvent) -> Unit
 ) {
     LaunchedEffect(key1 = true) {
         viewModel.uiEvents.collect {
-            when(it) {
-                is UIEvent.popStackBack -> onPopBack(it)
-                else -> Unit
-            }
+            onUIEvent(it)
         }
     }
 
 
     Scaffold(
-        topBar = { TodoItemTopBar(
-            todoTitle = viewModel.title,
-            onEvent = viewModel::onEvent,
-            editState = viewModel.state
-        ) }
-    ){
+        topBar = {
+            TodoItemTopBar(
+                todoTitle = viewModel.title,
+                onEvent = viewModel::onEvent,
+                editState = viewModel.state
+            )
+        }
+    ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -51,7 +51,6 @@ fun TodoItemScreen(
             )
         }
     }
-
 }
 
 
