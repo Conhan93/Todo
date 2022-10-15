@@ -11,8 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.todo.ui.TodoItem.TodoItemEvent
-import com.example.todo.ui.TodoItem.TodoItemVM
 import com.example.todo.ui.TodoItemReminders.TodoItemRemindersEvent
 
 
@@ -32,16 +30,10 @@ fun TodoItemRemindersTopBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = { onEvent(TodoItemRemindersEvent.backPressEvent) },
+                onClick = { onEvent(TodoItemRemindersEvent.BackPressEvent) },
                 padding
             ) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
-            }
-            IconButton(
-                onClick = { onEvent(TodoItemRemindersEvent.saveEvent) },
-                padding
-            ) {
-                Icon(imageVector = Icons.Filled.AddCircle, contentDescription = null)
             }
         }
     }
