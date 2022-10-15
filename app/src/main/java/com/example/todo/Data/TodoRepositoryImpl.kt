@@ -1,9 +1,11 @@
 package com.example.todo.Data
 
 import com.example.todo.Models.ReminderNotification
+import com.example.todo.Models.Services.TodoNotificationService
 import com.example.todo.Models.Todo
 import com.example.todo.Util.isUUID
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import java.util.*
 
 class TodoRepositoryImpl(
@@ -15,7 +17,14 @@ class TodoRepositoryImpl(
     }
 
     override suspend fun deleteTodoAsync(todo: Todo) {
+
+        val reminders = getAllRemindersByTodoId(todo.id!!).first()
+        reminders.forEach {
+            deleteReminderAsync(it)
+        }
+
         todoDAO.deleteTodoAsync(todo)
+
     }
 
     override suspend fun getTodoByIDAsync(id: Int): Todo? {

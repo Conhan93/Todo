@@ -84,7 +84,13 @@ class TodoRepositoryTest {
 
         withContext(Dispatchers.IO) {
             val todos = repository.getTodos().first()
-            assert(todos.contains(todo))
+            assertEquals(true, todos.contains(todo))
+        }
+
+        withContext(Dispatchers.IO) {
+            val reminders = repository.getAllRemindersByTodoId(todo.id!!).first()
+
+            assertEquals(true, reminders.isEmpty())
         }
     }
 
