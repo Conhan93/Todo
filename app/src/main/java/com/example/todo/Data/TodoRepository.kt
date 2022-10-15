@@ -19,6 +19,11 @@ interface TodoRepository {
     suspend fun insertReminderAsync(reminder: ReminderNotification): Boolean
 
     suspend fun deleteReminderAsync(reminder: ReminderNotification)
+    suspend fun deleteReminderByUUIDAsync(uuid: UUID) {
+        getReminderByUUIDAsync(uuid)?.let { reminder ->
+            deleteReminderAsync(reminder)
+        }
+    }
 
     suspend fun getReminderByIdAsync(id: Int): ReminderNotification?
     suspend fun getReminderByUUIDAsync(uuid: UUID): ReminderNotification?
