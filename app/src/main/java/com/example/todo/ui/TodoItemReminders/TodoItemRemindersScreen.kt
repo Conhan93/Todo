@@ -44,7 +44,6 @@ fun TodoItemRemindersScreen(
             TodoItemRemindersVM.ScreenState.VIEW_LIST -> {
                 RemindersList(reminders = reminders.value, onEvent = viewModel::onEvent)
             }
-            TodoItemRemindersVM.ScreenState.EDIT -> TODO()
             TodoItemRemindersVM.ScreenState.ADD -> {
                 DateTimePicker {
                     viewModel.onEvent(TodoItemRemindersEvent.AddEvent(it))

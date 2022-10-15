@@ -31,7 +31,7 @@ class TodoItemRemindersVM @Inject constructor(
 
     val reminders = repository.getAllRemindersByTodoId(todoId)
 
-    enum class ScreenState { VIEW_LIST, EDIT, ADD }
+    enum class ScreenState { VIEW_LIST, ADD }
     var screenState by mutableStateOf(ScreenState.VIEW_LIST)
         private set
 
