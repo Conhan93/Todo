@@ -6,4 +6,5 @@ sealed class TodoItemEvent {
     data class setEditState(val state: TodoItemVM.TodoState) : TodoItemEvent()
     object saveTodo : TodoItemEvent()
     object navigateToReminders: TodoItemEvent()
+    object BackPress: TodoItemEvent()
 }

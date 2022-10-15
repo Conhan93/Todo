@@ -62,6 +62,13 @@ class TodoItemVM @Inject constructor(
             is TodoItemEvent.setBody -> body = event.body
             is TodoItemEvent.setTitle -> title = event.title
             is TodoItemEvent.setEditState -> state = event.state
+            TodoItemEvent.BackPress -> {
+                if (state == TodoState.EDIT) {
+                    state = TodoState.VIEW
+                } else {
+                    sendUIEvent(UIEvent.popStackBack)
+                }
+            }
             TodoItemEvent.navigateToReminders -> {
                 sendUIEvent(UIEvent.navigate(Routes.TODO_REMINDER+ "?todoId=${todo!!.id!!}"))
             }
