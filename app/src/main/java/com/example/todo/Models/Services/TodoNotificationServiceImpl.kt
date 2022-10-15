@@ -54,8 +54,6 @@ class TodoNotificationServiceImpl(
                 pendingIntent
             )
 
-            repository.insertReminderAsync(reminderNotification)
-
             return uuid
         } else {
             Log.e(Constants.APP_TAG, "scheduleNotification: Unable to save reminder")
