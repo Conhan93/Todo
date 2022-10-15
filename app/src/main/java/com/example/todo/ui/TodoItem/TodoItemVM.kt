@@ -52,8 +52,11 @@ class TodoItemVM @Inject constructor(
                     todo = it
                 }
             }
-        else
+        else {
             todo = Todo("", "")
+            state = TodoState.EDIT
+        }
+
     }
 
     fun onEvent(event: TodoItemEvent) {
