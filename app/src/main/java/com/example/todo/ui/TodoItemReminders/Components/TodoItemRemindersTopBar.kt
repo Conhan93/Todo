@@ -10,8 +10,11 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.todo.ui.TodoItemReminders.TodoItemRemindersEvent
+import com.example.todo.R
 
 
 @Composable
@@ -32,6 +35,7 @@ fun TodoItemRemindersTopBar(
             IconButton(
                 onClick = { onEvent(TodoItemRemindersEvent.BackPressEvent) },
                 padding
+                    .testTag(stringResource(R.string.test_reminder_back_button))
             ) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
             }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // todo list screen
+    <string name="test_todo_list_add_button">add_button_tag</string>
+    <string name="test_todo_list_header">todo list header tag</string>
+
+    // todo item screen
+    <string name="test_todo_item_save_button">item save button</string>
+    <string name="test_todo_item_back_button">item back button</string>
+    <string name="test_todo_title_box">item title box</string>
+    <string name="test_todo_body_box">item body box</string>
+    <string name="test_todo_reminder_button">item reminder button</string>
+
+    // todo reminder screen
+    <string name="test_reminder_add_button">reminder add button</string>
+    <string name="test_reminder_back_button">reminder back button</string>
+</resources>

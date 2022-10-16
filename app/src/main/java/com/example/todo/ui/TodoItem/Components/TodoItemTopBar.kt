@@ -10,13 +10,15 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todo.ui.TodoItem.TodoItemEvent
 import com.example.todo.ui.TodoItem.TodoItemVM
-
+import com.example.todo.R
 
 @Composable
 fun TodoItemTopBar(
@@ -40,7 +42,10 @@ fun TodoItemTopBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { onEvent(TodoItemEvent.BackPress)}) {
+            IconButton(
+                onClick = { onEvent(TodoItemEvent.BackPress)},
+                modifier = Modifier.testTag(stringResource(R.string.test_todo_item_back_button))
+            ) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
             }
             if (editState == TodoItemVM.TodoState.EDIT) {
@@ -49,11 +54,15 @@ fun TodoItemTopBar(
                     value = todoTitle,
                     onValueChange = { onEvent(TodoItemEvent.setTitle(it)) },
                     textStyle = titleStyle,
-                    modifier = padding.weight(3f)
+                    modifier = padding
+                        .weight(3f)
+                        .testTag(stringResource(R.string.test_todo_title_box))
                 )
                 IconButton(
                     onClick = { onEvent(TodoItemEvent.saveTodo) },
-                    modifier = padding.then(buttonWeight)
+                    modifier = padding
+                        .testTag(stringResource(R.string.test_todo_item_save_button))
+                        .then(buttonWeight)
                 ) {
                     Icon(imageVector = Icons.Filled.Add, contentDescription = "save todo")
                 }
@@ -67,6 +76,7 @@ fun TodoItemTopBar(
                 Row {
                     IconButton(
                         onClick = { onEvent(TodoItemEvent.navigateToReminders) },
+                        modifier = Modifier.testTag(stringResource(R.string.test_todo_reminder_button))
                     ) {
                         Icon(imageVector = Icons.Filled.DateRange, null)
                     }

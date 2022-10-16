@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.todo.R
 
 import com.example.todo.Util.UIEvent
 import com.example.todo.ui.Components.DateTimePicker
@@ -44,6 +47,7 @@ fun TodoItemScreen(
         ) {
             TextField(
                 modifier = Modifier
+                    .testTag(stringResource(R.string.test_todo_body_box))
                     .fillMaxSize(),
                 value = viewModel.body,
                 onValueChange = { viewModel.onEvent(TodoItemEvent.setBody(it)) },
