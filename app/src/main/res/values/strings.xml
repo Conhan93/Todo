@@ -7,4 +7,9 @@
     <string name="notification_title_key">title</string>
     <string name="notification_message_key">message</string>
     <string name="notification_id_key">uuid</string>
+
+    <string name="todo_filter_button_done">Done</string>
+    <string name="todo_filter_button_not_done">Not done</string>
+
+    <string name="todo_list_header">Todo</string>
 </resources>

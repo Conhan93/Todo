@@ -7,7 +7,7 @@ import com.example.todo.Models.Todo
 
 @Database(
     entities = [Todo::class, ReminderNotification::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class TodoDatabase : RoomDatabase() {

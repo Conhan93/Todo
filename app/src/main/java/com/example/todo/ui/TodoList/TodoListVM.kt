@@ -1,16 +1,21 @@
 package com.example.todo.ui.TodoList
 
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.Data.TodoRepository
 import com.example.todo.Models.Services.TodoNotificationService
+import com.example.todo.Models.Todo
 import com.example.todo.Util.Routes
 import com.example.todo.Util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,7 +26,11 @@ class TodoListVM @Inject constructor(
     private val notificationService: TodoNotificationService
 ) : ViewModel() {
 
-    val todos = repository.getTodos()
+    enum class TodoFilter { DONE, NOT_DONE, ALL }
+    var filterState by mutableStateOf(TodoFilter.ALL)
+        private set
+
+    var todos = repository.getTodos()
 
     private val _uiEvents = Channel<UIEvent>()
     val uiEvents = _uiEvents.receiveAsFlow()
@@ -38,6 +47,11 @@ class TodoListVM @Inject constructor(
                         repository.insertTodoAsync(checkedTodo)
                     }
                 }
+            }
+            is TodoListUIEvent.filterTodos -> {
+                filterState = if (event.filter == filterState) TodoFilter.ALL else event.filter
+
+                todos = updateTodos(filterState)
             }
         }
     }
@@ -59,5 +73,18 @@ class TodoListVM @Inject constructor(
                 repository.deleteTodoAsync(todo)
             }
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun updateTodos(filter: TodoFilter): Flow<List<Todo>> {
+        return repository
+            .getTodos()
+            .mapLatest { todos ->
+                when(filter) {
+                    TodoFilter.DONE -> todos.filter { it.isCompleted }
+                    TodoFilter.NOT_DONE -> todos.filter { it.isCompleted.not() }
+                    TodoFilter.ALL -> todos
+                }
+            }
     }
 }
