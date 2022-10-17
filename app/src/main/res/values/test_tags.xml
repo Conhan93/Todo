@@ -4,6 +4,9 @@
     <string name="test_todo_list_add_button">add_button_tag</string>
     <string name="test_todo_list_header">todo list header tag</string>
     <string name="test_todo_list_item">test_todo_list_item</string>
+    <string name="test_todo_item_check_box">item check box</string>
+    <string name="test_todo_list_done_button">done button</string>
+    <string name="test_todo_list_not_done_button">not done button</string>
 
     // todo item screen
     <string name="test_todo_item_save_button">item save button</string>

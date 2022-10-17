@@ -7,16 +7,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+
 import com.example.todo.Models.Todo
-import com.example.todo.ui.TodoItem.TodoItemEvent
 import com.example.todo.ui.TodoList.TodoListUIEvent
+import com.example.todo.R
 
 
 @Composable
@@ -52,7 +53,11 @@ fun TodoItemCard(
                 }
             }
 
-            IconButton(onClick = { onEvent(TodoListUIEvent.itemCheck(todo.id!!, todo.isCompleted.not()))}) {
+            IconButton(
+                onClick = { onEvent(TodoListUIEvent.itemCheck(todo.id!!, todo.isCompleted.not()))},
+                modifier = Modifier
+                    .testTag("${stringResource(R.string.test_todo_item_check_box)}/${todo.title}")
+            ) {
                 val iconTint = if (todo.isCompleted) {
                     MaterialTheme.colors.primaryVariant
                 } else {

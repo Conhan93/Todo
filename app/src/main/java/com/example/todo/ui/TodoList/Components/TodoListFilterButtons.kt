@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.example.todo.R
 import com.example.todo.ui.TodoList.TodoListUIEvent
@@ -33,7 +34,8 @@ fun TodoFilterButtons(
         Button(
             onClick = { onEvent(TodoListUIEvent.filterTodos(TodoListVM.TodoFilter.DONE)) },
             modifier = buttonWeight
-                .height(IntrinsicSize.Min),
+                .height(IntrinsicSize.Min)
+                .testTag(stringResource(R.string.test_todo_list_done_button)),
             shape = RectangleShape,
             colors = if (filter == TodoListVM.TodoFilter.DONE) activeColor else inActiveColor
         ) {
@@ -45,7 +47,8 @@ fun TodoFilterButtons(
         Button(
             onClick = { onEvent(TodoListUIEvent.filterTodos(TodoListVM.TodoFilter.NOT_DONE)) },
             modifier = buttonWeight
-                .height(IntrinsicSize.Min),
+                .height(IntrinsicSize.Min)
+                .testTag(stringResource(R.string.test_todo_list_not_done_button)),
             shape = RectangleShape,
             colors = if (filter == TodoListVM.TodoFilter.NOT_DONE) activeColor else inActiveColor
         ) {
