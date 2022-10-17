@@ -73,6 +73,7 @@ fun TodoListScreen(
                             onEvent = vm::onUIEvent,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .testTag("${stringResource(R.string.test_todo_list_item)}/${it.title}")
                         )
                     }
 

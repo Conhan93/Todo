@@ -71,7 +71,7 @@ fun TodoItemTopBar(
                 Text(
                     text = todoTitle,
                     style = titleStyle,
-                    modifier = padding
+                    modifier = padding.testTag(stringResource(R.string.test_todo_title_box))
                 )
                 Row {
                     IconButton(

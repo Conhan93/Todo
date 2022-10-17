@@ -15,7 +15,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.todo.R
 import java.time.ZonedDateTime
 
 
@@ -68,7 +71,10 @@ fun DateTimePicker(
                     Text("Cancel")
                 }
             }
-            TextButton(onClick = { onSelect(time.value) }) {
+            TextButton(
+                onClick = { onSelect(time.value) },
+                modifier = Modifier.testTag(stringResource(R.string.test_reminder_select_button))
+            ) {
                 Text("Select")
             }
         }

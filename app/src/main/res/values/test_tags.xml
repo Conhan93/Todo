@@ -3,6 +3,7 @@
     // todo list screen
     <string name="test_todo_list_add_button">add_button_tag</string>
     <string name="test_todo_list_header">todo list header tag</string>
+    <string name="test_todo_list_item">test_todo_list_item</string>
 
     // todo item screen
     <string name="test_todo_item_save_button">item save button</string>
@@ -14,4 +15,5 @@
     // todo reminder screen
     <string name="test_reminder_add_button">reminder add button</string>
     <string name="test_reminder_back_button">reminder back button</string>
+    <string name="test_reminder_select_button">date picker select</string>
 </resources>
