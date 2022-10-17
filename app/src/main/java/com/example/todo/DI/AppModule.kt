@@ -19,19 +19,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideTodoDatabase(app : Application) : TodoDatabase {
-        return Room
-            .databaseBuilder(
-                app,
-                TodoDatabase::class.java,
-                "todo_db"
-            )
-            .fallbackToDestructiveMigration()
-            .build()
-    }
-
-    @Provides
-    @Singleton
     fun provideTodoRepository(database : TodoDatabase) : TodoRepository {
         return TodoRepositoryImpl(database.todoDAO, database.reminderDAO)
     }
