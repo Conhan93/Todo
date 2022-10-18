@@ -1,6 +1,5 @@
 package com.example.todo.ui.TodoItem
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,16 +7,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.Data.TodoRepository
-import com.example.todo.Models.Services.TodoNotificationService
 import com.example.todo.Models.Todo
-import com.example.todo.Util.Constants
 import com.example.todo.Util.Routes
 import com.example.todo.Util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -87,7 +83,6 @@ class TodoItemVM @Inject constructor(
                 repository.insertTodoAsync(it)
             }
         }
-        Log.d("TodoItemVM", "saved todo : $todo")
 
         sendUIEvent(UIEvent.popStackBack)
 
