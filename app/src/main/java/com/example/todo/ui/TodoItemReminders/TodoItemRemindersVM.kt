@@ -58,7 +58,6 @@ class TodoItemRemindersVM @Inject constructor(
                     }
                 }
             }
-            TodoItemRemindersEvent.SaveEvent -> TODO()
             TodoItemRemindersEvent.NewReminderEvent -> {
                 screenState = ScreenState.ADD
             }
