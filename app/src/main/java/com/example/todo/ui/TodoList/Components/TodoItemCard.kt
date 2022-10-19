@@ -47,7 +47,7 @@ fun TodoItemCard(
                 Row(Modifier.padding(start = 5.dp)) {
                     Text(
                         text = todo.body,
-                        maxLines = 3,
+                        maxLines = 1,
                         overflow = TextOverflow.Clip
                     )
                 }
