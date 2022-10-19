@@ -36,16 +36,27 @@ fun TodoListScreen(
     val todos = vm.todos.collectAsState(initial = listOf())
     val filter = vm.filterState
 
+    val scaffoldState = rememberScaffoldState()
+
     LaunchedEffect(key1 = true) {
         vm.uiEvents.collect {
             when(it) {
                 is UIEvent.navigate -> onNavigate(it)
+                is UIEvent.ShowSnackBar -> {
+                    val result = scaffoldState.snackbarHostState.showSnackbar(
+                        it.message,
+                        it.actionLabel
+                    )
+                    if (result == SnackbarResult.ActionPerformed)
+                        vm.onUIEvent(TodoListUIEvent.UndoDeleteTodo)
+                }
                 else -> Unit
             }
         }
     }
     
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar {
                 Text(

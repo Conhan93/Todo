@@ -170,4 +170,59 @@ class TodoListVMTest {
         assertEquals(todosAll, todos.first())
 
     }
+
+    @Test
+    fun `Should generate show snack bar UI event on deleteEvent`() = runTest {
+        val id = 1
+        val todo = Todo("foo", "foo", id = id)
+
+        whenever(repository.getTodos())
+            .thenReturn(flowOf(listOf(todo)))
+
+        val viewModel = TodoListVM(repository, notificationService)
+
+        val UIEvents = viewModel.uiEvents
+
+        viewModel.onUIEvent(TodoListUIEvent.itemDelete(id))
+
+        val expectedEvent = UIEvent.ShowSnackBar("Todo deleted", "Undo")
+        assertEquals(expectedEvent, UIEvents.first())
+    }
+
+    @Test
+    fun `Should restore deleted todo on UndoDeleteTodo`() = runTest {
+        val id = 1
+        val todo = Todo("foo", "foo", id = id)
+
+        val savedTodos = mutableListOf(todo)
+
+        whenever(repository.getTodos())
+            .thenReturn(flowOf(savedTodos))
+        whenever(repository.getTodoByIDAsync(eq(id)))
+            .thenReturn(savedTodos.first { it.id == id })
+        whenever(repository.insertTodoAsync(eq(todo)))
+            .then { savedTodos.add(todo) }
+        whenever(repository.deleteTodoAsync(eq(todo)))
+            .then { savedTodos.removeFirst() }
+
+        whenever(repository.getAllRemindersByTodoId(eq(id)))
+            .thenReturn(flowOf(listOf()))
+
+        val viewModel = TodoListVM(repository, notificationService)
+
+        assertEquals(listOf(todo), viewModel.todos.first())
+
+        viewModel.onUIEvent(TodoListUIEvent.itemDelete(id))
+
+        withContext(Dispatchers.IO) { delay(2) }
+
+        verify(repository, atLeastOnce()).deleteTodoAsync(eq(todo))
+        assertTrue(viewModel.todos.first().isEmpty())
+
+        viewModel.onUIEvent(TodoListUIEvent.UndoDeleteTodo)
+
+        withContext(Dispatchers.IO) { delay(2) }
+
+        assertEquals(listOf(todo), viewModel.todos.first())
+    }
 }

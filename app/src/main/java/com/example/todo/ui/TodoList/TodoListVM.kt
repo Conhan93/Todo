@@ -35,9 +35,17 @@ class TodoListVM @Inject constructor(
     private val _uiEvents = Channel<UIEvent>()
     val uiEvents = _uiEvents.receiveAsFlow()
 
+    private lateinit var latestDeletedTodo: Todo
+
     fun onUIEvent(event : TodoListUIEvent) {
         when(event) {
-            is TodoListUIEvent.itemDelete -> deleteTodo(event.id)
+            is TodoListUIEvent.itemDelete -> {
+                deleteTodo(event.id)
+                sendUIEvent(UIEvent.ShowSnackBar(
+                    message = "Todo deleted",
+                    actionLabel = "Undo"
+                ))
+            }
             is TodoListUIEvent.itemSelect -> sendUIEvent(UIEvent.navigate(Routes.TODO_ITEM + "?todoId=${event.id}"))
             TodoListUIEvent.addItem -> sendUIEvent(UIEvent.navigate(Routes.TODO_ITEM))
             is TodoListUIEvent.itemCheck -> {
@@ -53,6 +61,11 @@ class TodoListVM @Inject constructor(
 
                 todos = updateTodos(filterState)
             }
+            TodoListUIEvent.UndoDeleteTodo -> {
+                viewModelScope.launch {
+                    repository.insertTodoAsync(latestDeletedTodo)
+                }
+            }
         }
     }
 
@@ -65,6 +78,8 @@ class TodoListVM @Inject constructor(
     private fun deleteTodo(id : Int) {
         viewModelScope.launch {
             repository.getTodoByIDAsync(id)?.let { todo ->
+                latestDeletedTodo = todo
+
                 withContext(Dispatchers.IO) {
                     val reminders = repository.getAllRemindersByTodoId(todo.id!!).first()
 

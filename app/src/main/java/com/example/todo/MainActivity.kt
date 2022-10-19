@@ -44,6 +44,7 @@ class MainActivity : ComponentActivity() {
                             when (event) {
                                 is UIEvent.navigate -> navController.navigate(event.route)
                                 UIEvent.popStackBack -> navController.popBackStack()
+                                else -> Unit
                             }
                         }
                     }
