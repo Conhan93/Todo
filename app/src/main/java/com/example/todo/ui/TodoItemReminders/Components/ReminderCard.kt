@@ -35,7 +35,7 @@ fun ReminderCard(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "${date.hour}.${date.minute}",
+            text = date.format(DateTimeFormatter.ofPattern("HH:mm EEE")),
             style = TextStyle(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 30.sp
@@ -43,7 +43,7 @@ fun ReminderCard(
             modifier = contentPadding
         )
         Text(
-            text = date.toLocalDate().format(DateTimeFormatter.ISO_DATE),
+            text = date.format(DateTimeFormatter.ofPattern("dd/LLL")),
             style = TextStyle(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 30.sp
