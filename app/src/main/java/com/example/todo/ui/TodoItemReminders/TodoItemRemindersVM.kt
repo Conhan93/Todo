@@ -30,6 +30,7 @@ class TodoItemRemindersVM @Inject constructor(
     private val todoId = savedStateHandle.get<Int>("todo_id") ?: -1
 
     val reminders = repository.getAllRemindersByTodoId(todoId)
+    private lateinit var lastDeletedReminder: ReminderNotification
 
     enum class ScreenState { VIEW_LIST, ADD }
     var screenState by mutableStateOf(ScreenState.VIEW_LIST)
@@ -61,11 +62,24 @@ class TodoItemRemindersVM @Inject constructor(
             TodoItemRemindersEvent.NewReminderEvent -> {
                 screenState = ScreenState.ADD
             }
-            is TodoItemRemindersEvent.DeleteEvent -> deleteReminder(event.reminder)
+            is TodoItemRemindersEvent.DeleteEvent -> {
+                deleteReminder(event.reminder)
+
+                viewModelScope.launch {
+                    _uiEvents.send(UIEvent.ShowSnackBar(
+                        "Reminder deleted",
+                        "Undo"
+                    ))
+                }
+            }
             is TodoItemRemindersEvent.AddEvent -> {
                 addReminder(event.dateTime)
 
                 screenState = ScreenState.VIEW_LIST
+            }
+            TodoItemRemindersEvent.UndoDelete -> {
+                val dateTime = ZonedDateTime.parse(lastDeletedReminder.date)
+                addReminder(dateTime)
             }
         }
 
@@ -79,6 +93,8 @@ class TodoItemRemindersVM @Inject constructor(
     }
 
     private fun deleteReminder(reminderNotification: ReminderNotification) {
+        lastDeletedReminder = reminderNotification
+
         viewModelScope.launch {
             notificationService.removeNotification(reminderNotification)
         }

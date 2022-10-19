@@ -2,7 +2,9 @@ package com.example.todo.ui.TodoItemReminders
 
 
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,17 +28,28 @@ fun TodoItemRemindersScreen(
     onPopBack : (UIEvent.popStackBack) -> Unit
 ) {
     val reminders = viewModel.reminders.collectAsState(initial = listOf())
+    val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvents.collect {
             when(it) {
                 is UIEvent.popStackBack -> onPopBack(it)
+                is UIEvent.ShowSnackBar -> {
+                    val result = scaffoldState.snackbarHostState.showSnackbar(
+                        it.message,
+                        it.actionLabel
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        viewModel.onEvent(TodoItemRemindersEvent.UndoDelete)
+                    }
+                }
                 else -> Unit
             }
         }
     }
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = { TodoItemRemindersTopBar(onEvent = viewModel::onEvent)},
         floatingActionButton = {
             if (viewModel.screenState == TodoItemRemindersVM.ScreenState.VIEW_LIST)

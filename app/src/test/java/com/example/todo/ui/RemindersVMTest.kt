@@ -9,6 +9,7 @@ import com.example.todo.Util.UIEvent
 import com.example.todo.ui.TodoItemReminders.TodoItemRemindersEvent
 import com.example.todo.ui.TodoItemReminders.TodoItemRemindersVM
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -205,5 +206,65 @@ class RemindersVMTest {
         withContext(Dispatchers.IO) { delay(5) }
 
         verify(notificationService, atLeastOnce()).removeNotification(eq(reminder))
+    }
+
+    @Test
+    fun `Should generate show snack bar UI event on deleteEvent`() = runTest {
+        val viewModel = TodoItemRemindersVM(repository, notificationService, savedStateHandle)
+        val reminder = ReminderNotification(
+            "foo",
+            "foo",
+            UUID.randomUUID().toString(),
+            1,
+            ZonedDateTime.now().toString()
+        )
+
+        val UIEvents = viewModel.uiEvents
+
+        viewModel.onEvent(TodoItemRemindersEvent.DeleteEvent(reminder))
+
+        withContext(Dispatchers.IO) { delay(2) }
+
+        val expectedEvent = UIEvent.ShowSnackBar("Reminder deleted", "Undo")
+
+        val event = UIEvents.first()
+        assertTrue(event is UIEvent.ShowSnackBar)
+        assertEquals(event, expectedEvent)
+    }
+
+    @Test
+    fun `Should restore deleted reminder on UndoDelete event`() = runTest {
+        val todo = Todo("foo", "foo", id = 1)
+        val reminder = ReminderNotification(
+            "foo",
+            "foo",
+            UUID.randomUUID().toString(),
+            todo.id!!,
+            ZonedDateTime.now().toString()
+        )
+        launchWithTodo(todo)
+
+        val savedReminders = mutableListOf(reminder)
+
+        whenever(repository.getAllRemindersByTodoId(eq(todo.id!!)))
+            .thenReturn(flowOf(savedReminders))
+        whenever(notificationService.removeNotification(eq(reminder)))
+            .then { savedReminders.remove(reminder) }
+        whenever(notificationService.scheduleNotification(any(), any()))
+            .then { savedReminders.add(reminder) }
+
+        val viewModel = TodoItemRemindersVM(repository, notificationService, savedStateHandle)
+
+        assertEquals(listOf(reminder), viewModel.reminders.first())
+
+        viewModel.onEvent(TodoItemRemindersEvent.DeleteEvent(reminder))
+        withContext(Dispatchers.IO) { delay(2) }
+
+        assertEquals(listOf<ReminderNotification>(), viewModel.reminders.first())
+
+        viewModel.onEvent(TodoItemRemindersEvent.UndoDelete)
+        withContext(Dispatchers.IO) { delay(2) }
+
+        assertEquals(listOf(reminder), viewModel.reminders.first())
     }
 }
